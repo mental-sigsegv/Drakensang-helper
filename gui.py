@@ -1,25 +1,54 @@
 import tkinter as tk
+import json
+from tkinter import *
 
 
-opacity = 1
+def set_opacity(value):
+    # print(f'Opacity: {value}')
+    value = value/100+0.1
+    with open("settings.json", "r+") as jfile:
+        settings = json.load(jfile)
+        settings['opacity'] = value
+        jfile.seek(0)
+        json.dump(settings, jfile)
+        jfile.truncate()
+    root.attributes('-alpha', value)
 
 
-def makeSomething(value):
-    global opacity
-    opacity = value
-    print(opacity)
+def changeOnHover(button, colorOnHover, colorOnLeave):
+    # adjusting backgroung of the widget
+    # background on entering widget
+    button.bind("<Enter>", func=lambda e: button.config(
+        background=colorOnHover))
+    # background color on leving widget
+    button.bind("<Leave>", func=lambda e: button.config(
+        background=colorOnLeave))
 
 
-root = tk.Tk()
-root.title("Drakensang scripts")
-root.geometry("280x450")
-root.attributes('-alpha', opacity)
+if __name__ == "__main__":
+    BG_COLOR = '#641e16'
 
-canvas = tk.Frame(root)
-canvas.grid()
+    root = tk.Tk()
+    root.title("Drakensang scripts")
+    root.geometry("280x450")
+    root.wm_geometry("-100+100")
+    root.iconbitmap('./images/drakensang_logo.ico')
+    root.configure(bg=BG_COLOR)
+    root.lift()
 
-tk.Label(canvas, text="Hello World!").grid(column=0, row=0)
-tk.Button(canvas, text="Quit", command=root.destroy).grid(column=1, row=0)
-tk.Button(canvas, text="Opacity", command=lambda *args: makeSomething(0.6)).grid(column=1, row=0)
+    Grid.rowconfigure(root, 0, weight=1)
+    Grid.columnconfigure(root, 0, weight=1)
+    Grid.rowconfigure(root, 1, weight=1)
 
-root.mainloop()
+    opacity_scale = Scale(root, from_=0, to=100, orient=HORIZONTAL, command=lambda *args: set_opacity(opacity_scale.get()), bg=BG_COLOR)
+    opacity_scale.grid(column=0, row=2, sticky="NSEW")
+
+    with open("settings.json", "r") as jfile:
+        settings = json.load(jfile)
+        opacity_scale.set((settings["opacity"]-0.1)*100)
+
+    quit_button = Button(root, text="Quit", command=root.destroy, bg=BG_COLOR, activebackground='#cd6155')
+    quit_button.grid(column=0, row=0, sticky="NE")
+    changeOnHover(quit_button, "#cd6155", BG_COLOR)
+
+    root.mainloop()
