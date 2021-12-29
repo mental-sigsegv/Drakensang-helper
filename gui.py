@@ -2,10 +2,13 @@ import tkinter as tk
 
 
 opacity = 1
+
+
 def makeSomething(value):
     global opacity
     opacity = value
     print(opacity)
+
 
 root = tk.Tk()
 root.title("Drakensang scripts")

@@ -2,7 +2,6 @@ from pynput import keyboard
 import pyautogui
 
 
-
 def on_activate_stop():
     print('Exiting...')
     exit()
