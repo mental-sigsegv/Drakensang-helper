@@ -11,3 +11,4 @@ with open("settings.json", "r+") as jfile:
 print(data['opacity'])
 print('Done')
 print('Done')
+print('Done')
