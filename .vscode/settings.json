@@ -3,4 +3,5 @@
     "python.linting.enabled": true,
     "python.formatting.provider": "autopep8",
     "python.linting.pycodestyleEnabled" : true,
+    "path-intellisense.absolutePathToWorkspace": true
 }
